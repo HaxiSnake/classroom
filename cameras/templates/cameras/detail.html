@@ -1,0 +1,26 @@
+{% include 'cameras/head.html' %}
+
+<div class="container-fluid">
+        <h2>{{ camera.classroom_text }}监控</h2>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cameras:index' %}">主页</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cameras:cameralist' %}">教室列表</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="#">摄像头管理</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+            </li>
+        </ul>
+</div>
+<div class="container-fluid">
+        <h2>教室: {{ camera.classroom_text }}</h2>
+        <h2>摄像头IP: {{ camera.camera_ip_text }}</h2>
+        <div>
+                <img src="{% url 'cameras:player' camera.id %}">
+        </div>
+</div>

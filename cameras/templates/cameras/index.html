@@ -1,0 +1,56 @@
+{% include 'cameras/head.html' %}
+<body>
+
+<div class="container-fluid">
+        <h2>主页</h2>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'cameras:index' %}">主页</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cameras:cameralist' %}">教室列表</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="#">摄像头管理</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+            </li>
+        </ul>
+</div>
+<div class="container-fluid block-center" style="margin-top:30px;margin-left:auto;margin-right:auto">
+    {% if cameras_list %}
+        {% for camera in cameras_list %}
+            {% if forloop.first %}
+                <div class="row">
+            {% endif %}
+            <div class="col-4">
+                <a class="text-center" target="_blank" href="{% url 'cameras:detail' camera.id %}">
+                    <img src="{% url 'cameras:screenshot' camera.id %}" class="img-responsive block-center" width="480" height="270">
+                    <p class="text-center">{{ camera.classroom_text }}</p>
+                </a>
+            </div>
+            {% if forloop.last %}
+                </div>
+            {% endif %}
+            {% if forloop.counter|divisibleby:3 %}
+                {% if forloop.last != 1 %}
+                    </div>
+                    <div class="row">
+                    <div class="panel-heading">
+                    <h3 class="panel-title"> </h3>
+                    </div>
+                    </div>
+                    <div class="row">
+                {% endif %}
+            {% endif %}
+            
+            
+        {% endfor %}
+    {% else %}
+        <p>No cameras are available.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

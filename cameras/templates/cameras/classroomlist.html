@@ -1,0 +1,45 @@
+{% include 'cameras/head.html' %}
+
+
+<div class="container-fluid">
+        <h2>教室列表</h2>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cameras:index' %}">主页</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'cameras:cameralist' %}">教室列表</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="#">摄像头管理</a>
+            </li>
+            <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+            </li>
+        </ul>
+</div>
+
+<div class="container-fluid" style="margin-top: 30px">
+  {% if cameras_list %}
+    <div class="row">
+    {% for camera in cameras_list %}
+
+        {% if forloop.first %}
+            <div class="col-1"><ul>
+        {% endif %}
+        <li><a href="{% url 'cameras:detail' camera.id %}">{{ camera.classroom_text }}</a></li>
+        {% if forloop.last %}
+            </ul></div>
+        {% endif %}
+        {% if forloop.counter|divisibleby:2 %}
+            {% if forloop.last != 1 %}
+            </ul></div>
+            <div class="col-1"><ul>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    </div>
+    {% else %}
+        <p>No cameras are available.</p>
+    {% endif %}
+</div>
