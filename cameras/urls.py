@@ -21,6 +21,7 @@ from . import views
 app_name = 'cameras'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('ad/', admin.site.urls),
     path('cameralist/', views.ClassroomListView.as_view(), name='cameralist'),
     path('<int:pk>/',views.DetailView.as_view(),name='detail'),
     path('<int:camera_id>/screenshot',views.screenshot,name='screenshot'),

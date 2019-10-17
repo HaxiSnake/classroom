@@ -1,31 +1,29 @@
 {% include 'cameras/head.html' %}
-<body>
 
-<div class="container-fluid">
-        <h2>主页</h2>
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link active" href="{% url 'cameras:index' %}">主页</a>
-            </li>
-            <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cameras:cameralist' %}">教室列表</a>
-            </li>
-            <li class="nav-item">
-                    <a class="nav-link" href="#">摄像头管理</a>
-            </li>
-            <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-            </li>
-        </ul>
-</div>
-<div class="container-fluid block-center" style="margin-top:30px;margin-left:auto;margin-right:auto">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'cameras:index' %}">智能教室检测系统</a>
+          </div>
+          <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="{% url 'cameras:index' %}">主页</a></li>
+              <li><a href="{% url 'cameras:cameralist' %}">教室列表</a></li>
+              <li><a href="ad/">监控管理</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+</nav>
+
+<!-- <div class="container block-center" style="margin-top:30px;margin-left:auto;margin-right:auto"> -->
+<div class="container block-center" style="margin-top:100px; margin-left:auto; margin-right:auto">
     {% if cameras_list %}
         {% for camera in cameras_list %}
             {% if forloop.first %}
                 <div class="row">
             {% endif %}
-            <div class="col-4">
-                <a class="text-center" target="_blank" href="{% url 'cameras:detail' camera.id %}">
+            <div class="col-md-4">
+                <a class="text-center" target="_self" href="{% url 'cameras:detail' camera.id %}">
                     <img src="{% url 'cameras:screenshot' camera.id %}" class="img-responsive block-center" width="480" height="270">
                     <p class="text-center">{{ camera.classroom_text }}</p>
                 </a>
@@ -52,5 +50,4 @@
     {% endif %}
 </div>
 
-</body>
-</html>
+{% include 'cameras/foot.html' %}

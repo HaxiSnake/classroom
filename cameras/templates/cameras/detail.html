@@ -1,26 +1,25 @@
 {% include 'cameras/head.html' %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                  <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'cameras:index' %}">智能教室检测系统</a>
+                  </div>
+                  <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                      <li><a href="{% url 'cameras:index' %}">主页</a></li>
+                      <li><a href="{% url 'cameras:cameralist' %}">教室列表</a></li>
+                      <li><a href="../ad/">监控管理</a></li>
+                    </ul>
+                  </div><!--/.nav-collapse -->
+                </div>
+</nav>
 
-<div class="container-fluid">
-        <h2>{{ camera.classroom_text }}监控</h2>
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cameras:index' %}">主页</a>
-            </li>
-            <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cameras:cameralist' %}">教室列表</a>
-            </li>
-            <li class="nav-item">
-                    <a class="nav-link" href="#">摄像头管理</a>
-            </li>
-            <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-            </li>
-        </ul>
-</div>
-<div class="container-fluid">
-        <h2>教室: {{ camera.classroom_text }}</h2>
-        <h2>摄像头IP: {{ camera.camera_ip_text }}</h2>
-        <div>
+<div class="container block-center" style="margin-top:100px;">
+        <div class="block-center">
                 <img src="{% url 'cameras:player' camera.id %}">
         </div>
+        <h3>教室: {{ camera.classroom_text }}</h3>
+        <h3>摄像头IP: {{ camera.camera_ip_text }}</h3>
 </div>
+
+{% include 'cameras/foot.html' %}
