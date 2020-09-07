@@ -5,6 +5,7 @@ import sys
 
 import torch
 from PIL import Image
+import PIL.ImageFont as ImageFont
 from vizer.draw import draw_boxes
 import argparse
 import numpy as np
@@ -69,6 +70,7 @@ class SSD():
         self.score_threshold = score_threshold
         self.transforms = build_transforms(self.cfg,is_train=False)
         self.model.eval()
+
     def predict(self,img):
         height, width = img.shape[:2]
         images = self.transforms(img)[0].unsqueeze(0)
@@ -89,10 +91,11 @@ class SSD():
         labels = labels[indices]
         scores = scores[indices]
         
-        drawn_image = draw_boxes(img, boxes, labels, scores, self.class_names).astype(np.uint8)
+        font = ImageFont.truetype('arial.ttf', 10)
+        drawn_image = draw_boxes(img, boxes, labels, scores, self.class_names, font=font).astype(np.uint8)
         drawn_image = self._draw_info(drawn_image,boxes)
-        t5 = time.time()
-        return drawn_image     
+        return len(boxes), drawn_image   
+      
     def _draw_info(self,img,boxes):
         number = len(boxes)
         word = "Sum:{}".format(number)

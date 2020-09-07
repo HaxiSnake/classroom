@@ -50,10 +50,13 @@ def screenshot(request,camera_id):
     camera = get_object_or_404(Camera, pk=camera_id)
     loader = Loader(camera.camera_ip_text)
     img = loader.get_frame()  
+    number = 0
     if img is None:
-        img = cv2.imread("./static/cameras/nocapture.png")  
-    img = ssd.predict(img)
-    img = cv2.resize(img,(0,0),fx=0.375,fy=0.375)
+        img = cv2.imread("./static/cameras/nocapture.png")
+    img = cv2.resize(img, (480, 270))  
+    number, img = ssd.predict(img)
+    camera.people_number = number
+    camera.save()
     content = tools.img_to_str(img)
     return HttpResponse(content,content_type="image/png")
 
@@ -63,18 +66,21 @@ def player(request,camera_id):
     camera = get_object_or_404(Camera, pk=camera_id)
     loader = Loader(camera.camera_ip_text)
     # loader = TestLoader()
-    return StreamingHttpResponse(gen(loader), 
+    return StreamingHttpResponse(gen(loader,camera), 
                                 content_type="multipart/x-mixed-replace; boundary=frame")
 
-def gen(loader):
+def gen(loader,camera):
     while True:
         img = loader.get_frame() 
+        number = 0
         if img is None:
             img = cv2.imread("./static/cameras/nocapture.png")  
         else:
-            img = ssd.predict(img)
-        # bytes_image = Image.fromarray(img).tobytes()
-        img = cv2.resize(img,(0,0),fx=0.5,fy=0.5)
+            img = cv2.resize(img, (640, 360))
+            number, img = ssd.predict(img)
+        camera.people_number = number
+        camera.save()
+        print(img.shape)
         frame = tools.img_to_str(img)
         yield (
             b'--frame\r\n'
