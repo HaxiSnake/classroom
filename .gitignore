@@ -1,2 +1,8 @@
-db.sqlite3
+nginx_static/
+cameras/migrations/
+*.sqlite3
 __pycache__
+.envs/
+*.pth
+*.pyc
+tmp.log

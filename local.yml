@@ -1,0 +1,20 @@
+version: '3'
+
+volumes:
+        database_dev:
+
+services:
+        classroom_server_develop:
+                build:
+                        context: .
+                        dockerfile: compose/local/django_dockerfile
+                image: classroom_server_develop
+                container_name: classroom_server_develop
+                working_dir: /app
+                volumes:
+                        - database_dev:/app/database
+                        - .:/app
+                        - /share:/share
+                ports:
+                        - "8000:8000"
+                command: /start.sh

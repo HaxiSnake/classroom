@@ -1,0 +1,44 @@
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
+
+LABEL author="dlut-sie"
+ENV CLASS_SERVER="SERVER" PYTHONUNBUFFERED=1
+WORKDIR /app
+
+# Change apt source list
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list \
+&& sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list 
+
+# Install libs
+RUN apt-get update --fix-missing \
+&& apt-get install -y vim python3 python3-pip libsm6 libxext6 libxrender-dev language-pack-zh-hans \ 
+&& locale-gen zh_CN.UTF-8 \
+&& rm -rf /var/cache/apk/* 
+
+RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections \
+&& apt-get install ttf-mscorefonts-installer -y \
+&& rm -rf /var/cache/apk/*
+
+ENV LC_ALL=zh_CN.UTF-8
+
+# Copy dependencies
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip3 install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple
+
+# Copy project
+COPY . .
+
+RUN cd cameras/net/ext/ \
+&& python3 build.py build_ext develop \
+&& cd $WORKDIR \
+&& pwd 
+
+RUN mkdir -p /root/.torch/models \ 
+&& mv vgg16_reducedfc.pth /root/.torch/models/ \
+&& mv vgg_ssd512_coco_trainval35k.pth cameras/net/model/ \
+&& mv compose/production/django/start.sh . 
+
+RUN sed -i 's/\r//' start.sh \
+&& chmod +x start.sh
+
