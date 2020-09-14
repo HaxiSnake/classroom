@@ -55,8 +55,6 @@ def screenshot(request,camera_id):
     if img is not None:
         print("img shape in screen shot:", img.shape)
     number = 0
-    if img is None:
-        img = cv2.imread(os.path.join(settings.BASE_DIR, "static/cameras/nocapture.png"))
     img = cv2.resize(img, (480, 270))  
     number, img = ssd.predict(img)
     camera.people_number = number
@@ -78,12 +76,8 @@ def gen(loader,camera):
         number = 0
         if img is not None and settings.DEBUG:
             print("img shape in gen:", img.shape)
-        if img is None:
-            img_path = os.path.join(settings.BASE_DIR, "static/cameras/nocapture.png")
-            img = cv2.imread(img_path) 
-        else:
-            img = cv2.resize(img, (640, 360))
-            number, img = ssd.predict(img)
+        img = cv2.resize(img, (640, 360))
+        number, img = ssd.predict(img)
         camera.people_number = number
         camera.save()
         frame = tools.img_to_str(img)
