@@ -1,5 +1,5 @@
 nginx_static/
-cameras/migrations/
+#cameras/migrations/
 *.sqlite3
 __pycache__
 .envs/

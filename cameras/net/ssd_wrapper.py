@@ -12,7 +12,7 @@ import numpy as np
 import cv2
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-print(sys.path)
+#print(sys.path)
 
 from ssd.config import cfg
 from ssd.data.datasets import COCODataset, VOCDataset
@@ -23,12 +23,17 @@ from ssd.utils.checkpoint import CheckPointer
 
 class SSD():
     instance = False
+
+
     def __init__(self, config_file, dataset_type,
                     weight,score_threshold=0.5, targets=["person"]):
          if SSD.instance is False:
-                self.update_config(config_file,dataset_type,weight,score_threshold,targets)
+            SSD.instance = True
+            self.update_config(config_file,dataset_type,weight,score_threshold,targets)
+
     def update_score_threshold(self, score_threshold):
         self.score_threshold = score_threshold
+
     def update_config(self, targets):
         self.target_labels = []
         if targets is None:
@@ -37,6 +42,7 @@ class SSD():
             for idx in range(len(self.class_names)):
                 if self.class_names[idx] in targets:
                     self.target_labels.append(idx)
+
     def update_config(self,config_file, dataset_type,
                       weight,score_threshold=0.5, targets=["person"]):
         if dataset_type == "voc":
@@ -58,8 +64,8 @@ class SSD():
         print("Loaded configuration file {}".format(config_file))
         with open(config_file, "r") as cf:
             config_str = "\n" + cf.read()
-            print(config_str)
-        print("Running SSD with config:\n{}".format(self.cfg))
+#            print(config_str)
+#        print("Running SSD with config:\n{}".format(self.cfg))
         
         self.device = torch.device(self.cfg.MODEL.DEVICE)
         self.model = build_detection_model(self.cfg)

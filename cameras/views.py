@@ -38,6 +38,7 @@ class IndexView(generic.ListView):
         return Camera.objects.all()
 
 class ClassroomListView(generic.ListView):
+    print("cameralist view")
     template_name = 'cameras/classroomlist.html'
     context_object_name = "cameras_list"
 
