@@ -1,6 +1,6 @@
 django==2.2.13
 opencv-python==4.1.1.26
-numpy==1.17.2
+numpy==1.22.0
 vizer==0.1.2
 yacs==0.1.6
 torch==1.0.1
